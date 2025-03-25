@@ -4,10 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.planingapp.ui.theme.PlaningAppTheme
@@ -26,7 +22,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = nav.addNote,
+                    startDestination = nav.homeScreen,
                     builder = {
                         composable(nav.homeScreen) {
                             HomeScreen(navController = navController)
@@ -34,8 +30,8 @@ class MainActivity : ComponentActivity() {
                         composable(nav.addNote) {
                             addAppoinment(viewModel= viewModel, navController = navController)
                         }
-                        composable(nav.showMyNotes) {
-                            Show(navController = navController)
+                        composable(nav.calander) {
+                            CalendarScreen(navController = navController)
                         }
                         /*   composable("editTodo/{noteid}") { backStackEntry ->
                             val noteid = backStackEntry.arguments?.getString("noteid")?.toIntOrNull()
@@ -50,18 +46,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PlaningAppTheme {
-        Greeting("Android")
-    }
-}
