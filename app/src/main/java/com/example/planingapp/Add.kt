@@ -22,7 +22,7 @@ import java.time.LocalTime
 import java.util.*
 
 @Composable
-fun addAppoinment(viewModel: AppointmentViewModel, navController: NavController) {
+fun AddAppoinment(viewModel: AppointmentViewModel, navController: NavController) {
     val context = LocalContext.current
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
@@ -58,17 +58,6 @@ fun addAppoinment(viewModel: AppointmentViewModel, navController: NavController)
                 .padding(start= 20.dp, top = 0.dp, end = 150.dp, bottom = 8.dp)
                 .clip(RoundedCornerShape(12.dp))
         )
-
-        // Date Picker
-        Button(modifier = Modifier.padding(start= 20.dp),
-            onClick = { showDatePicker(context) { selectedDate = it } },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF66B266)  // Use hex color #90EE90
-            )
-        ) {
-            Text("Select Date: $selectedDate")
-        }
-
         // Start Time Picker
         // Start Time Picker Button
         Button(modifier = Modifier.padding(start= 20.dp),
@@ -114,10 +103,9 @@ fun addAppoinment(viewModel: AppointmentViewModel, navController: NavController)
         // Save button
         Button(
             onClick = {
-                val newAppointment = Work(
+                val newAppointment = Appointment(
                     title = title,
                     description = description,
-                    date = selectedDate,
                     startTime = startTime,
                     endTime = endTime,
                     type = selectedType
@@ -170,7 +158,7 @@ fun PreviewNoteScreen() {
     val navController = rememberNavController()
     val mockViewModel = AppointmentViewModel()
 
-    addAppoinment(
+    AddAppoinment(
         viewModel = mockViewModel, // Mock ViewModel
         navController = navController,
     )
