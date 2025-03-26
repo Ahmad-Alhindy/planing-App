@@ -29,6 +29,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(nav.addNote) {
                             addAppoinment(viewModel= viewModel, navController = navController)
+                            AddAppoinment(viewModel= viewModel, navController = navController)
                         }
                         composable(nav.calander) {
                             CalendarScreen(navController = navController)

@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 
 
 class AppointmentViewModel : ViewModel() {
-    private val _works = mutableStateListOf<Work>()
-    val works: List<Work> get() = _works
+    private val _appointments = mutableStateListOf<Appointment>()
+    val Appointments: List<Appointment> get() = _appointments
 
-    fun addAppointment(work: Work) {
-        _works.add(work)
+    fun addAppointment(appointment: Appointment) {
+        _appointments.add(appointment)
     }
 }

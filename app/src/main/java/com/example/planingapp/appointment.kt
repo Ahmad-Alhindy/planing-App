@@ -5,11 +5,10 @@ import java.time.LocalTime
 import java.util.UUID
 
 enum class BusinessType { Work, pappaLedigt }
-data class Work(
+data class Appointment(
     val id: String = UUID.randomUUID().toString(),
     val title: String,
     val description: String? = null,
-    val date: LocalDate,
     val startTime: LocalTime? = null,
     val endTime: LocalTime? = null,
     val type: BusinessType
