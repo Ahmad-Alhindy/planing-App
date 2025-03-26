@@ -28,11 +28,10 @@ class MainActivity : ComponentActivity() {
                             HomeScreen(navController = navController)
                         }
                         composable(nav.addNote) {
-                            addAppoinment(viewModel= viewModel, navController = navController)
                             AddAppoinment(viewModel= viewModel, navController = navController)
                         }
                         composable(nav.calander) {
-                            CalendarScreen(navController = navController)
+                            CalendarScreen(viewModel= viewModel)
                         }
                         /*   composable("editTodo/{noteid}") { backStackEntry ->
                             val noteid = backStackEntry.arguments?.getString("noteid")?.toIntOrNull()
