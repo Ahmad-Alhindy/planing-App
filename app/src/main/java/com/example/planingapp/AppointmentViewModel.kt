@@ -1,14 +1,27 @@
 package com.example.planingapp
-import androidx.compose.runtime.mutableStateListOf
+import androidx.lifecycle.LiveData
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class AppointmentViewModel : ViewModel() {
-    private val _appointments = mutableStateListOf<Appointment>()
-    val Appointments: List<Appointment> get() = _appointments
+    val appointmentDao = MainActivity.appointmentDb.getDao()
+
+    val appointments : LiveData<List<Appointment>> = appointmentDao.getAllAppointment()
 
     fun addAppointment(appointment: Appointment) {
-        _appointments.add(appointment)
+        viewModelScope.launch (Dispatchers.IO){
+            appointmentDao.addAppointment(appointment)
+        }
+
+    }
+
+    fun deletAppoinment(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            appointmentDao.deleteAppointment(id)
+        }
     }
 }
