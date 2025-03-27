@@ -1,9 +1,9 @@
 package com.example.planingapp
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -19,22 +18,26 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Icon
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.rememberScrollState
-
+import androidx.compose.material3.Button
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.asFlow
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -43,12 +46,14 @@ import java.time.format.DateTimeFormatter
 fun CalendarScreen(viewModel: AppointmentViewModel) {
     var currentMonth by remember { mutableIntStateOf(LocalDate.now().monthValue) }
     var currentYear by remember { mutableIntStateOf(LocalDate.now().year) }
-    val appointments = viewModel.Appointments
+    val appointments by viewModel.appointments.asFlow().collectAsState(emptyList())
     val firstDayOfMonth = LocalDate.of(currentYear, currentMonth, 1)
     val daysInMonth = firstDayOfMonth.lengthOfMonth()
     val startDayOfWeek = firstDayOfMonth.dayOfWeek.value // 1 = Monday, 7 = Sunday
     val colorStart = Color(0xFF110A25)  // Forest Green
     val colorEnd = Color(0xFF452A4D)
+    var longClickedAppointment by remember { mutableStateOf<Appointment?>(null) }
+
     Column(modifier = Modifier.fillMaxSize() .background(brush = Brush.verticalGradient(listOf(colorStart, colorEnd))),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -59,6 +64,13 @@ fun CalendarScreen(viewModel: AppointmentViewModel) {
                     modifier = Modifier
                         .padding(8.dp) // Space between items
                         .background(Color(0xFF4CAF50))
+                            .pointerInput(Unit) {
+                        detectTapGestures(
+                            onLongPress = {
+                                longClickedAppointment = appointment // Set the long-clicked appointment
+                            }
+                        )
+                    }
                 ) {
                     // Display the type at the top
                     Text(
@@ -76,6 +88,19 @@ fun CalendarScreen(viewModel: AppointmentViewModel) {
                         text = "$startTimeFormatted, $endTimeFormatted",
                         fontSize = 14.sp
                     )
+                   longClickedAppointment?.let {
+                       if (it == appointment) {
+                           Button(
+                               onClick = {
+                                  viewModel.deletAppoinment(appointment.id) // Call the delete function
+                                   longClickedAppointment = null // Reset the long-click state
+                               },
+                               modifier = Modifier.padding(top = 8.dp)
+                           ) {
+                               Text("Delete")
+                           }
+                       }
+                   }
                 }
             }
         }
