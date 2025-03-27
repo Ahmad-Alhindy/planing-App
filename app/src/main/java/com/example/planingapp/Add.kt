@@ -1,6 +1,5 @@
 package com.example.planingapp
 
-import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import androidx.compose.foundation.background
@@ -17,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import java.time.LocalDate
 import java.time.LocalTime
 import java.util.*
 
@@ -26,10 +24,9 @@ fun AddAppoinment(viewModel: AppointmentViewModel, navController: NavController)
     val context = LocalContext.current
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var selectedType by remember { mutableStateOf(BusinessType.Work) }
+  ///////  var selectedType by remember { mutableStateOf(BusinessType.Work) }
 
     // Date & Time States
-    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
     var startTime by remember { mutableStateOf(LocalTime.of(9, 0)) }
     var endTime by remember { mutableStateOf(LocalTime.of(10, 0)) }
     val colorStart = Color(0xFF110A25)  // Forest Green
@@ -78,7 +75,7 @@ fun AddAppoinment(viewModel: AppointmentViewModel, navController: NavController)
         }
 
         // Dropdown for selecting type
-        var expanded by remember { mutableStateOf(false) }
+       /* var expanded by remember { mutableStateOf(false) }
         Box(modifier = Modifier.fillMaxWidth()) {
             Button(modifier = Modifier.padding(start= 20.dp),
                 onClick = { expanded = true },
@@ -98,7 +95,7 @@ fun AddAppoinment(viewModel: AppointmentViewModel, navController: NavController)
                     )
                 }
             }
-        }
+        }*/
 
         // Save button
         Button(
@@ -108,7 +105,6 @@ fun AddAppoinment(viewModel: AppointmentViewModel, navController: NavController)
                     description = description,
                     startTime = startTime,
                     endTime = endTime,
-                    type = selectedType
                 )
                 viewModel.addAppointment(newAppointment)
                 navController.popBackStack()
@@ -123,19 +119,7 @@ fun AddAppoinment(viewModel: AppointmentViewModel, navController: NavController)
     }
 }
 
-// Date Picker Function
-fun showDatePicker(context: Context, onDateSelected: (LocalDate) -> Unit) {
-    val calendar = Calendar.getInstance()
-    DatePickerDialog(
-        context,
-        { _, year, month, dayOfMonth ->
-            onDateSelected(LocalDate.of(year, month + 1, dayOfMonth))
-        },
-        calendar.get(Calendar.YEAR),
-        calendar.get(Calendar.MONTH),
-        calendar.get(Calendar.DAY_OF_MONTH)
-    ).show()
-}
+
 
 // Time Picker Function
 fun showTimePicker(context: Context, onTimeSelected: (Int, Int) -> Unit) {

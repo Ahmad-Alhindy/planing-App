@@ -8,16 +8,25 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.planingapp.ui.theme.PlaningAppTheme
 import androidx.navigation.compose.NavHost
-
-
+import androidx.room.Room
+import com.example.planingapp.db.AppointmentDb
 
 
 class MainActivity : ComponentActivity() {
+    companion object {
+        lateinit var appointmentDb: AppointmentDb
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appointmentDb = Room.databaseBuilder(
+            applicationContext,
+            AppointmentDb::class.java,
+            AppointmentDb.NAME
+        ).build()
         enableEdgeToEdge()
         setContent {
             PlaningAppTheme {
+
                 val viewModel = AppointmentViewModel()
                 val navController = rememberNavController()
                 NavHost(
