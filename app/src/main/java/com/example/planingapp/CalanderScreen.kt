@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.asFlow
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -53,46 +55,55 @@ fun CalendarScreen(viewModel: AppointmentViewModel) {
     val colorStart = Color(0xFF110A25)  // Forest Green
     val colorEnd = Color(0xFF452A4D)
     var longClickedAppointment by remember { mutableStateOf<Appointment?>(null) }
+   Box( modifier = Modifier.fillMaxSize()
+       .zIndex(1f)
+       .background(brush = Brush.verticalGradient(listOf(colorStart, colorEnd))),
+       ) {
+       Row(
+           modifier = Modifier.padding(top = 30.dp, start = 10.dp)
+               .zIndex(1f)
+               .horizontalScroll(rememberScrollState())
+       ) {
+           appointments.forEach { appointment ->
+               // Use a Column for each appointment
+               Column(
+                   modifier = Modifier
+                       .padding(8.dp) // Space between items
+                       .background(Color(0xFF4CAF50))
+                       .pointerInput(Unit) {
+                           detectTapGestures(
+                               onLongPress = {
+                                   longClickedAppointment =
+                                       appointment // Set the long-clicked appointment
+                               }
+                           )
+                       }
+               ) {
+                   // Display the type at the top
+                   Text(
+                       text = appointment.title.toString(),
+                       fontWeight = FontWeight.Bold,
+                       fontSize = 16.sp
+                   )
 
-    Column(modifier = Modifier.fillMaxSize() .background(brush = Brush.verticalGradient(listOf(colorStart, colorEnd))),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Row(modifier = Modifier.padding(top = 20.dp, start = 10.dp).horizontalScroll(rememberScrollState())) {
-            appointments.forEach { appointment ->
-                // Use a Column for each appointment
-                Column(
-                    modifier = Modifier
-                        .padding(8.dp) // Space between items
-                        .background(Color(0xFF4CAF50))
-                            .pointerInput(Unit) {
-                        detectTapGestures(
-                            onLongPress = {
-                                longClickedAppointment = appointment // Set the long-clicked appointment
-                            }
-                        )
-                    }
-                ) {
-                    // Display the type at the top
-                    Text(
-                        text = appointment.title.toString(),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
-                    )
+                   // Add space between type and times
+                   Spacer(modifier = Modifier.height(2.dp))
 
-                    // Add space between type and times
-                    Spacer(modifier = Modifier.height(2.dp))
-
-                    val startTimeFormatted = appointment.startTime?.format(DateTimeFormatter.ofPattern("HH:mm")) ?: "N/A"
-                    val endTimeFormatted = appointment.endTime?.format(DateTimeFormatter.ofPattern("HH:mm")) ?: "N/A"
-                    Text(
-                        text = "$startTimeFormatted, $endTimeFormatted",
-                        fontSize = 14.sp
-                    )
+                   val startTimeFormatted =
+                       appointment.startTime?.format(DateTimeFormatter.ofPattern("HH:mm"))
+                           ?: "N/A"
+                   val endTimeFormatted =
+                       appointment.endTime?.format(DateTimeFormatter.ofPattern("HH:mm"))
+                           ?: "N/A"
+                   Text(
+                       text = "$startTimeFormatted, $endTimeFormatted",
+                       fontSize = 14.sp
+                   )
                    longClickedAppointment?.let {
                        if (it == appointment) {
                            Button(
                                onClick = {
-                                  viewModel.deletAppoinment(appointment.id) // Call the delete function
+                                   viewModel.deletAppoinment(appointment.id) // Call the delete function
                                    longClickedAppointment = null // Reset the long-click state
                                },
                                modifier = Modifier.padding(top = 8.dp)
@@ -101,79 +112,95 @@ fun CalendarScreen(viewModel: AppointmentViewModel) {
                            }
                        }
                    }
-                }
-            }
-        }
+               }
+           }
+       }
+       Column( modifier = Modifier
+           .fillMaxWidth()
+           .zIndex(0f)
+           .padding(top = 70.dp)) {
+           // Month and Year Header with Navigation Buttons
+           Row(
+               modifier = Modifier
+                   .fillMaxWidth()
+                   .zIndex(0f)
+                   .padding(top = 16.dp),
+               horizontalArrangement = Arrangement.SpaceBetween,
+               verticalAlignment = Alignment.CenterVertically
+           ) {
+               IconButton(onClick = {
+                   if (currentMonth == 1) {
+                       currentMonth = 12
+                       currentYear -= 1
+                   } else {
+                       currentMonth--
+                   }
+               }) {
+                   Icon(
+                       Icons.AutoMirrored.Filled.ArrowBack,
+                       contentDescription = "Previous Month",
+                       tint = Color.White
+                   )
+               }
 
-        // Month and Year Header with Navigation Buttons
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = {
-                if (currentMonth == 1) {
-                    currentMonth = 12
-                    currentYear -= 1
-                } else {
-                    currentMonth--
-                }
-            }) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Previous Month",
-                    tint = Color.White)
-            }
+               Text(
+                   text = "${
+                       firstDayOfMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }
+                   } $currentYear",
+                   fontSize = 20.sp,
+                   fontWeight = FontWeight.Bold,
+                   color = Color.White // Change to desired color
+               )
 
-            Text(
-                text = "${firstDayOfMonth.month.name.lowercase().replaceFirstChar { it.uppercase() }} $currentYear",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White // Change to desired color
-            )
+               IconButton(onClick = {
+                   if (currentMonth == 12) {
+                       currentMonth = 1
+                       currentYear++
+                   } else {
+                       currentMonth++
+                   }
+               }) {
+                   Icon(
+                       Icons.AutoMirrored.Filled.ArrowForward,
+                       contentDescription = "Next Month",
+                       tint = Color.White
+                   )
+               }
+           }
 
-            IconButton(onClick = {
-                if (currentMonth == 12) {
-                    currentMonth = 1
-                    currentYear++
-                } else {
-                    currentMonth++
-                }
-            }) {
-                Icon(Icons.AutoMirrored.Filled.ArrowForward,
-                    contentDescription = "Next Month",
-                    tint = Color.White)
-            }
-        }
+           // Days Grid
+           LazyVerticalGrid(
+               columns = GridCells.Fixed(4),
+               verticalArrangement = Arrangement.spacedBy(5.dp) // Adds space between rows
+           ) {
+               items(startDayOfWeek - 1) {} // Empty spaces before the 1st
 
-        // Days Grid
-        LazyVerticalGrid(columns = GridCells.Fixed(4),
-            verticalArrangement = Arrangement.spacedBy(5.dp) // Adds space between rows
-        ) {
-            items(startDayOfWeek - 1) {} // Empty spaces before the 1st
+               items(daysInMonth) { day ->
+                   val currentDate = firstDayOfMonth.plusDays(day.toLong()) // Get the correct date
+                   val dayLetter =
+                       currentDate.dayOfWeek.name.lowercase().first() // Extract first letter
 
-            items(daysInMonth) { day ->
-                val currentDate = firstDayOfMonth.plusDays(day.toLong()) // Get the correct date
-                val dayLetter = currentDate.dayOfWeek.name.lowercase().first() // Extract first letter
+                   Column(
+                       modifier = Modifier
+                           .height(80.dp)
+                           .background(Color.LightGray),
+                       horizontalAlignment = Alignment.CenterHorizontally
 
-                Column(
-                    modifier = Modifier
-                        .height(80.dp)
-                        .background(Color.LightGray),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                   ) {
+                       Text(
+                           text = dayLetter.toString(),
+                           fontSize = 18.sp
+                       ) // Day letter (e.g., "M")
+                       Spacer(modifier = Modifier.height(15.dp))
+                       Text(text = (day + 1).toString(), fontSize = 18.sp) // Day number
+                   }
+               }
+           }
+       }
+   }
 
-                ) {
-                    Text(text = dayLetter.toString(), fontSize = 18.sp) // Day letter (e.g., "M")
-                    Spacer(modifier = Modifier.height(15.dp))
-                    Text(text = (day + 1).toString(), fontSize = 18.sp) // Day number
-                }
-            }
-        }
-    }
+
 }
-
-
 
 @Preview(showBackground = true)
 @Composable
