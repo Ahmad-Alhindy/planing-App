@@ -1,15 +1,14 @@
 package com.example.planingapp
 
-import java.time.LocalDate
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalTime
-import java.util.UUID
-
-enum class BusinessType { Work, pappaLedigt }
+@Entity
 data class Appointment(
-    val id: String = UUID.randomUUID().toString(),
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0 ,
     val title: String,
     val description: String? = null,
     val startTime: LocalTime? = null,
     val endTime: LocalTime? = null,
-    val type: BusinessType
 )
