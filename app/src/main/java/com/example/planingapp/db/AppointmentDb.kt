@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.example.planingapp.Appointment
 
 
-@Database(entities = [Appointment::class], version = 1)
+@Database(entities = [Appointment::class], version = 3)
 @TypeConverters(Converters::class)  // Add this line
 abstract class AppointmentDb : RoomDatabase() {
     companion object{

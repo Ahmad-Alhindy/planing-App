@@ -9,13 +9,18 @@ import com.example.planingapp.Appointment
 
 @Dao
 interface Dao {
+    @Query("SELECT * FROM Appointment")
+    fun getAllAppointment(): LiveData<List<Appointment>>
 
-    @Query("Select * from Appointment")
-    fun getAllAppointment() : LiveData<List<Appointment>>
+    @Query("SELECT * FROM Appointment WHERE isTemplate = 1")
+    fun getAllTemplates(): LiveData<List<Appointment>>
+
+    @Query("SELECT * FROM Appointment WHERE isTemplate = 0")
+    fun getAllScheduledAppointments(): LiveData<List<Appointment>>
 
     @Insert
     fun addAppointment(appointment: Appointment)
 
-    @Query("Delete from Appointment where id = :id")
+    @Query("DELETE FROM Appointment WHERE id = :id")
     fun deleteAppointment(id: Int)
 }

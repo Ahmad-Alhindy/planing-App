@@ -22,11 +22,11 @@ class MainActivity : ComponentActivity() {
             applicationContext,
             AppointmentDb::class.java,
             AppointmentDb.NAME
-        ).build()
+        ) .fallbackToDestructiveMigration() // Add this line
+            .build()
         enableEdgeToEdge()
         setContent {
             PlaningAppTheme {
-
                 val viewModel = AppointmentViewModel()
                 val navController = rememberNavController()
                 NavHost(
@@ -37,10 +37,10 @@ class MainActivity : ComponentActivity() {
                             HomeScreen(navController = navController)
                         }
                         composable(nav.addNote) {
-                            AddAppoinment(viewModel= viewModel, navController = navController)
+                            AddAppointment(viewModel = viewModel, navController = navController)
                         }
                         composable(nav.calander) {
-                            CalendarScreen(viewModel= viewModel)
+                            CalendarScreen(viewModel = viewModel, navController = navController)
                         }
                         /*   composable("editTodo/{noteid}") { backStackEntry ->
                             val noteid = backStackEntry.arguments?.getString("noteid")?.toIntOrNull()
