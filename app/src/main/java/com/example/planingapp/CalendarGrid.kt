@@ -37,14 +37,6 @@ fun CalendarGrid(
     val startDayOfWeek = firstDayOfMonth.dayOfWeek.value // 1 = Monday, 7 = Sunday
 
 
-
-
-    // Create a map of dates to appointment counts for this month
-    val appointmentsByDate = appointments
-        .filter { it.date?.month == currentYearMonth.month && it.date.year == currentYearMonth.year }
-        .groupBy { it.date }
-        .mapValues { it.value.size }
-
     // Build calendar grid
     // Days Grid
     LazyVerticalGrid(
@@ -68,7 +60,7 @@ fun CalendarGrid(
             // The calendar cell
             Box(
                 modifier = Modifier
-                    .height(135.dp)
+                    .height(138.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(
                         if (isToday) Color(0x33FFFFFF) else Color(0x22FFFFFF)
