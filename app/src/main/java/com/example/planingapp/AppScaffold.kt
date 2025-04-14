@@ -67,17 +67,17 @@ fun AppScaffold(content: @Composable () -> Unit) {
                     }
                 )
 
-                HorizontalDivider()
+               // HorizontalDivider()
 
-                // Settings and other options
-                NavigationDrawerItem(
-                    label = { Text("Settings") },
-                    selected = false,
-                    onClick = {
-                        // Navigate to settings
-                        scope.launch { drawerState.close() }
-                    }
-                )
+//                // Settings and other options
+//                NavigationDrawerItem(
+//                    label = { Text("Settings") },
+//                    selected = false,
+//                    onClick = {
+//                        // Navigate to settings
+//                        scope.launch { drawerState.close() }
+//                    }
+//                )
             }
         },
         content = {
