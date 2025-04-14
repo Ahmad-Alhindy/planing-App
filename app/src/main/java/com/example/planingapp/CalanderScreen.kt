@@ -34,23 +34,20 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.asFlow
 import androidx.navigation.NavController
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun CalendarScreen(viewModel: AppointmentViewModel, navController: NavController) {
-    var currentMonth by remember { mutableIntStateOf(LocalDate.now().monthValue) }
-    var currentYear by remember { mutableIntStateOf(LocalDate.now().year) }
+    var currentYearMonth by remember { mutableStateOf(YearMonth.now()) }
     val appointments by viewModel.scheduledAppointments.asFlow().collectAsState(emptyList())
     val templates by viewModel.templates.asFlow().collectAsState(emptyList())
-    val firstDayOfMonth = LocalDate.of(currentYear, currentMonth, 1)
-    val daysInMonth = firstDayOfMonth.lengthOfMonth()
-    val startDayOfWeek = firstDayOfMonth.dayOfWeek.value // 1 = Monday, 7 = Sunday
     val colorStart = Color(0xFF110A25)
     val colorEnd = Color(0xFF452A4D)
 
     // Dialog states
-    var showTemplateDialog by remember { mutableStateOf(false) }
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
+    var showTemplateDialog by remember { mutableStateOf(false) }
     var showAppointmentsForDate by remember { mutableStateOf<LocalDate?>(null) }
     AppScaffold {
 
@@ -66,191 +63,24 @@ fun CalendarScreen(viewModel: AppointmentViewModel, navController: NavController
                     .padding(top = 10.dp)
             ) {
                 // Month and Year Header with Navigation Buttons
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = {
-                        if (currentMonth == 1) {
-                            currentMonth = 12
-                            currentYear -= 1
-                        } else {
-                            currentMonth -= 1
-                        }
-                    }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Previous Month",
-                            tint = Color.White
-                        )
+                CalendarHeader(
+                    currentYearMonth = currentYearMonth,
+                    onPreviousMonth = { currentYearMonth = currentYearMonth.minusMonths(1) },
+                    onNextMonth = { currentYearMonth = currentYearMonth.plusMonths(1) }
+                )
+
+                // Calendar grid for day selection
+                CalendarGrid(
+                    currentYearMonth = currentYearMonth,
+                    appointments = appointments,
+                    onDateSelected = { date ->
+                        selectedDate = date
+                        showTemplateDialog = true  // Show the dialog when a date is selected
+                    },
+                    onShowAppointmentsForDate = { date ->
+                        showAppointmentsForDate = date
                     }
-                    Text(
-                        text = "${
-                            firstDayOfMonth.month.name.lowercase()
-                                .replaceFirstChar { it.uppercase() }
-                        } $currentYear",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                    IconButton(onClick = {
-                        if (currentMonth == 12) {
-                            currentMonth = 1
-                            currentYear += 1
-                        } else {
-                            currentMonth += 1
-                        }
-                    }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = "Next Month",
-                            tint = Color.White
-                        )
-                    }
-                }
-
-                // Weekday header row
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    val weekdays = listOf("M", "T", "W", "T", "F", "Sa", "So")
-                    weekdays.forEach { day ->
-                        Text(
-                            text = day,
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.width(40.dp),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-
-                // Days Grid
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(7),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(2.dp),
-                    modifier = Modifier.padding(horizontal = 4.dp)
-                ) {
-                    items(startDayOfWeek - 1) {
-                        // Empty spaces before the 1st
-                        Box(modifier = Modifier.height(120.dp))
-                    }
-
-                    items(daysInMonth) { day ->
-                        val currentDate = firstDayOfMonth.plusDays(day.toLong())
-                        val dateAppointments = appointments.filter {
-                            it.date?.equals(currentDate) == true
-                        }
-                        val isToday = currentDate == LocalDate.now()
-
-                        // The calendar cell
-                        Box(
-                            modifier = Modifier
-                                .height(140.dp)
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(
-                                    if (isToday) Color(0x33FFFFFF) else Color(0x22FFFFFF)
-                                )
-                                .pointerInput(Unit) {
-                                    detectTapGestures(
-                                        onTap = {
-                                            selectedDate = currentDate
-                                            showTemplateDialog = true
-                                        },
-                                        onLongPress = {
-                                            if (dateAppointments.isNotEmpty()) {
-                                                showAppointmentsForDate = currentDate
-                                            }
-                                        }
-                                    )
-                                }
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(4.dp)
-                            ) {
-                                // Day number at the top
-                                Box(
-                                    modifier = Modifier
-                                        .padding(2.dp)
-                                        .size(24.dp)
-                                        .clip(CircleShape)
-                                        .background(if (isToday) Color(0xFF4CAF50) else Color.Transparent),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = (day + 1).toString(),
-                                        fontSize = 14.sp,
-                                        color = if (isToday) Color.White else Color.LightGray,
-                                        fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal
-                                    )
-                                }
-
-                                Spacer(modifier = Modifier.height(2.dp))
-
-                                // Display appointments for this date
-                                if (dateAppointments.isNotEmpty()) {
-                                    Column(
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        dateAppointments.take(2).forEach { appointment ->
-                                            Box(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .padding(vertical = 2.dp)
-                                                    .clip(RoundedCornerShape(4.dp))
-                                                    .background(Color(0xFF4CAF50))
-                                                    .padding(2.dp)
-                                            ) {
-                                                Column {
-                                                    Text(
-                                                        text = appointment.title,
-                                                        fontSize = 10.sp,
-                                                        color = Color.White,
-                                                        fontWeight = FontWeight.Bold,
-                                                        maxLines = 1,
-                                                        overflow = TextOverflow.Ellipsis
-                                                    )
-
-                                                    val startTimeFormatted =
-                                                        appointment.startTime?.format(
-                                                            DateTimeFormatter.ofPattern("HH:mm")
-                                                        ) ?: "N/A"
-
-                                                    Text(
-                                                        text = startTimeFormatted,
-                                                        fontSize = 9.sp,
-                                                        color = Color.White,
-                                                        maxLines = 1
-                                                    )
-                                                }
-                                            }
-                                        }
-
-                                        // If there are more than 2 appointments
-                                        if (dateAppointments.size > 2) {
-                                            Text(
-                                                text = "+${dateAppointments.size - 2} more",
-                                                fontSize = 9.sp,
-                                                color = Color(0xFFFFFFFF),
-                                                modifier = Modifier.padding(top = 2.dp),
-                                                textAlign = TextAlign.Center
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                )
             }
 
             // Floating Action Button to create new template or add from existing
