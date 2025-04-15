@@ -28,7 +28,7 @@ fun CalendarScreen(viewModel: AppointmentViewModel, navController: NavController
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
     var showTemplateDialog by remember { mutableStateOf(false) }
     var showAppointmentsForDate by remember { mutableStateOf<LocalDate?>(null) }
-    AppScaffold {
+    AppScaffold(navController = navController) {
 
         Box(
             modifier = Modifier

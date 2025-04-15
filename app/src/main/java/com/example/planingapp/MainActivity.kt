@@ -42,13 +42,12 @@ class MainActivity : ComponentActivity() {
                         composable(nav.calander) {
                             CalendarScreen(viewModel = viewModel, navController = navController)
                         }
-                        /*   composable("editTodo/{noteid}") { backStackEntry ->
-                            val noteid = backStackEntry.arguments?.getString("noteid")?.toIntOrNull()
-                            val todoItem = NoteList.find { it.id == noteid }
-                            todoItem?.let {
-                                EditNoteScreen(navController = navController, it)}
-                        }*/
-
+                        composable(nav.week) {
+                            WeekView(navController = navController)
+                        }
+                        composable(nav.day) {
+                            WeekView(navController = navController)
+                        }
                     })
             }
         }

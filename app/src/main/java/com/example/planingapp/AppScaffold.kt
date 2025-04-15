@@ -23,13 +23,22 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppScaffold(content: @Composable () -> Unit) {
+fun AppScaffold(navController: NavController
+                ,content: @Composable () -> Unit
+){
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -44,30 +53,55 @@ fun AppScaffold(content: @Composable () -> Unit) {
                     label = { Text("Day View") },
                     selected = false,
                     onClick = {
-                        // Change to day view
+                        navController.navigate(nav.day){
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            // Avoid multiple copies of the same destination when reselecting items
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
                         scope.launch { drawerState.close() }
                     }
                 )
 
                 NavigationDrawerItem(
                     label = { Text("Week View") },
-                    selected = false,
+                    selected = currentRoute == nav.week,
                     onClick = {
-                        // Change to week view
+                        navController.navigate(nav.week){
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            // Avoid multiple copies of the same destination when reselecting items
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
                         scope.launch { drawerState.close() }
                     }
                 )
 
                 NavigationDrawerItem(
                     label = { Text("Month View") },
-                    selected = true,
+                    selected = currentRoute == nav.calander,
                     onClick = {
-                        // Change to month view
+                       navController.navigate(nav.calander){
+                           popUpTo(navController.graph.findStartDestination().id) {
+                               saveState = true
+                           }
+                           // Avoid multiple copies of the same destination when reselecting items
+                           launchSingleTop = true
+                           // Restore state when reselecting a previously selected item
+                           restoreState = true
+                       }
+
                         scope.launch { drawerState.close() }
                     }
                 )
 
-               // HorizontalDivider()
+                HorizontalDivider()
 
 //                // Settings and other options
 //                NavigationDrawerItem(
