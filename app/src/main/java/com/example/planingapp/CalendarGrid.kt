@@ -107,7 +107,7 @@ fun CalendarGrid(
                         Column(
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            dateAppointments.take(2).forEach { appointment ->
+                            dateAppointments.take(1).forEach { appointment ->
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -126,13 +126,15 @@ fun CalendarGrid(
                                             overflow = TextOverflow.Ellipsis
                                         )
 
-                                        val startTimeFormatted =
+                                        val startTime =
                                             appointment.startTime?.format(
                                                 DateTimeFormatter.ofPattern("HH:mm")
                                             ) ?: "N/A"
-
+                                        val endTime = appointment.endTime?.format(
+                                            DateTimeFormatter.ofPattern("HH:mm")
+                                        ) ?: "N/A"
                                         Text(
-                                            text = startTimeFormatted,
+                                            text = "$startTime - $endTime",
                                             fontSize = 9.sp,
                                             color = Color.White,
                                             maxLines = 1
@@ -142,9 +144,9 @@ fun CalendarGrid(
                             }
 
                             // If there are more than 2 appointments
-                            if (dateAppointments.size > 2) {
+                            if (dateAppointments.size > 1) {
                                 Text(
-                                    text = "+${dateAppointments.size - 2} more",
+                                    text = "+${dateAppointments.size - 1} more",
                                     fontSize = 9.sp,
                                     color = Color(0xFFFFFFFF),
                                     modifier = Modifier.padding(top = 2.dp),
