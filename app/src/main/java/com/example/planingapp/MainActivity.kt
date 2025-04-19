@@ -43,10 +43,10 @@ class MainActivity : ComponentActivity() {
                             CalendarScreen(viewModel = viewModel, navController = navController)
                         }
                         composable(nav.week) {
-                            WeekView(navController = navController)
+                            WeekView(navController = navController, viewModel = viewModel)
                         }
                         composable(nav.day) {
-                            WeekView(navController = navController)
+                            DayView(navController = navController)
                         }
                     })
             }
