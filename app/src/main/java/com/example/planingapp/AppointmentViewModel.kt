@@ -10,7 +10,6 @@ import java.time.LocalDate
 class AppointmentViewModel : ViewModel() {
     val appointmentDao = MainActivity.appointmentDb.getDao()
 
-    val appointments: LiveData<List<Appointment>> = appointmentDao.getAllAppointment()
     val templates: LiveData<List<Appointment>> = appointmentDao.getAllTemplates()
     val scheduledAppointments: LiveData<List<Appointment>> = appointmentDao.getAllScheduledAppointments()
 
