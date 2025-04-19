@@ -9,9 +9,6 @@ import com.example.planingapp.Appointment
 
 @Dao
 interface Dao {
-    @Query("SELECT * FROM Appointment")
-    fun getAllAppointment(): LiveData<List<Appointment>>
-
     @Query("SELECT * FROM Appointment WHERE isTemplate = 1")
     fun getAllTemplates(): LiveData<List<Appointment>>
 

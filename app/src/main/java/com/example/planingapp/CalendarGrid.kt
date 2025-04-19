@@ -95,7 +95,7 @@ fun CalendarGrid(
                         Text(
                             text = (day + 1).toString(),
                             fontSize = 14.sp,
-                            color = if (isToday) Color.White else Color.LightGray,
+                            color = Color.White,
                             fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal
                         )
                     }
@@ -120,7 +120,7 @@ fun CalendarGrid(
                                         Text(
                                             text = appointment.title,
                                             fontSize = 10.sp,
-                                            color = Color.White,
+                                            color = Color.Black,
                                             fontWeight = FontWeight.Bold,
                                             maxLines = 1,
                                             overflow = TextOverflow.Ellipsis
@@ -136,7 +136,7 @@ fun CalendarGrid(
                                         Text(
                                             text = "$startTime - $endTime",
                                             fontSize = 9.sp,
-                                            color = Color.White,
+                                            color = Color.Black,
                                             maxLines = 1
                                         )
                                     }
