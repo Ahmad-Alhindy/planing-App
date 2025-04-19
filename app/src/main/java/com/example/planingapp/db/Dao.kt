@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.planingapp.Appointment
+import com.example.planingapp.logic.Appointment
 
 
 @Dao
