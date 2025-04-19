@@ -10,6 +10,13 @@ import com.example.planingapp.ui.theme.PlaningAppTheme
 import androidx.navigation.compose.NavHost
 import androidx.room.Room
 import com.example.planingapp.db.AppointmentDb
+import com.example.planingapp.logic.AppointmentViewModel
+import com.example.planingapp.logic.nav
+import com.example.planingapp.views.MakeAppointment
+import com.example.planingapp.views.CalendarScreen
+import com.example.planingapp.views.DayView
+import com.example.planingapp.views.HomeScreen
+import com.example.planingapp.views.WeekView
 
 
 class MainActivity : ComponentActivity() {
@@ -37,7 +44,7 @@ class MainActivity : ComponentActivity() {
                             HomeScreen(navController = navController)
                         }
                         composable(nav.addNote) {
-                            AddAppointment(viewModel = viewModel, navController = navController)
+                            MakeAppointment(viewModel = viewModel, navController = navController)
                         }
                         composable(nav.calander) {
                             CalendarScreen(viewModel = viewModel, navController = navController)
