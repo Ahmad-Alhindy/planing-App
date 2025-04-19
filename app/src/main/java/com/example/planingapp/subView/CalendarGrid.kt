@@ -1,4 +1,4 @@
-package com.example.planingapp
+package com.example.planingapp.subView
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.planingapp.logic.Appointment
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter

@@ -1,4 +1,4 @@
-package com.example.planingapp
+package com.example.planingapp.subView
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,6 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.planingapp.logic.Appointment
+import com.example.planingapp.logic.AppointmentViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

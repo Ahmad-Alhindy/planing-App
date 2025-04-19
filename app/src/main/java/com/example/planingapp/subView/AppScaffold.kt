@@ -1,4 +1,4 @@
-package com.example.planingapp
+package com.example.planingapp.subView
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -25,9 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import com.example.planingapp.logic.nav
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

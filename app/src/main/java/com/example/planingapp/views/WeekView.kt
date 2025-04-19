@@ -1,4 +1,4 @@
-package com.example.planingapp
+package com.example.planingapp.views
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -24,6 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.asFlow
 import androidx.navigation.NavController
+import com.example.planingapp.logic.Appointment
+import com.example.planingapp.logic.AppointmentViewModel
+import com.example.planingapp.logic.nav
+import com.example.planingapp.subView.AppScaffold
+import com.example.planingapp.subView.AppointmentDetails
+import com.example.planingapp.subView.TemplateDialog
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
@@ -75,10 +81,11 @@ fun WeekView(
                     showTemplateDialog = true  // Show the dialog when a date is selected
                 },
 
-            )
+                )
         }
         // Appointments Detail Dialog for a specific date
-        AppointmentDetails(showAppointmentsForDate = showAppointmentsForDate,
+        AppointmentDetails(
+            showAppointmentsForDate = showAppointmentsForDate,
             setShowAppointmentsForDate = { showAppointmentsForDate = it },
             appointments = appointments,
             viewModel = viewModel
@@ -107,9 +114,9 @@ fun WeekView(
             }
         )
         // Load appointments when the view is first displayed
-      /*  LaunchedEffect(Unit) {
-            viewModel.loadAppointments()
-        }*/
+        /*  LaunchedEffect(Unit) {
+              viewModel.loadAppointments()
+          }*/
     }
 }
 

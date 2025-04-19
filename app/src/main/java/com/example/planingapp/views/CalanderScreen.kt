@@ -1,4 +1,4 @@
-package com.example.planingapp
+package com.example.planingapp.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,6 +13,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.asFlow
 import androidx.navigation.NavController
+import com.example.planingapp.logic.AppointmentViewModel
+import com.example.planingapp.logic.nav
+import com.example.planingapp.subView.AppScaffold
+import com.example.planingapp.subView.AppointmentDetails
+import com.example.planingapp.subView.CalendarGrid
+import com.example.planingapp.subView.CalendarHeader
+import com.example.planingapp.subView.TemplateDialog
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -112,8 +119,9 @@ fun CalendarScreen(viewModel: AppointmentViewModel, navController: NavController
             )
 
 
-           // Appointments Detail Dialog for a specific date
-            AppointmentDetails(showAppointmentsForDate = showAppointmentsForDate,
+            // Appointments Detail Dialog for a specific date
+            AppointmentDetails(
+                showAppointmentsForDate = showAppointmentsForDate,
                 setShowAppointmentsForDate = { showAppointmentsForDate = it },
                 appointments = appointments,
                 viewModel = viewModel

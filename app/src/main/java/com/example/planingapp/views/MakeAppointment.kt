@@ -1,4 +1,4 @@
-package com.example.planingapp
+package com.example.planingapp.views
 
 import android.app.TimePickerDialog
 import android.content.Context
@@ -7,27 +7,27 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.planingapp.logic.Appointment
+import com.example.planingapp.logic.AppointmentViewModel
 import java.time.LocalTime
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class) // This is needed for CenterAlignedTopAppBar
 @Composable
-fun AddAppointment(viewModel: AppointmentViewModel, navController: NavController) {
+fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
+                      navController: NavController? = null) {
     val context = LocalContext.current
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
@@ -48,7 +48,7 @@ fun AddAppointment(viewModel: AppointmentViewModel, navController: NavController
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = { navController?.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
@@ -126,8 +126,8 @@ fun AddAppointment(viewModel: AppointmentViewModel, navController: NavController
                             endTime = endTime,
                             isTemplate = true
                         )
-                        viewModel.addTemplate(newAppointment)
-                        navController.popBackStack() // Navigate back after saving
+                        viewModel?.addTemplate(newAppointment)
+                        navController?.popBackStack() // Navigate back after saving
                     }
                 },
                 modifier = Modifier
@@ -141,7 +141,7 @@ fun AddAppointment(viewModel: AppointmentViewModel, navController: NavController
 
             // Cancel button
             TextButton(
-                onClick = { navController.popBackStack() }, // Navigate back without saving
+                onClick = { navController?.popBackStack() }, // Navigate back without saving
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 40.dp, end = 40.dp),
@@ -169,11 +169,5 @@ fun showTimePicker(context: Context, onTimeSelected: (Int, Int) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewAddAppointment() {
-    val navController = rememberNavController()
-    val mockViewModel = AppointmentViewModel()
-
-    AddAppointment(
-        viewModel = mockViewModel,
-        navController = navController
-    )
+    MakeAppointment() // No parameters needed
 }
