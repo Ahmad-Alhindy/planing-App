@@ -17,12 +17,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.planingapp.NotificationPermissionRequest
 import com.example.planingapp.logic.nav
 
 @Composable
 fun HomeScreen(navController: NavController) {
     val colorStart = Color(0xFF110A25)  // Forest Green
     val colorEnd = Color(0xFF452A4D)
+
+    NotificationPermissionRequest()
     Box (modifier = Modifier.fillMaxSize()
 
         .background(brush = Brush.verticalGradient(listOf(colorStart, colorEnd))),

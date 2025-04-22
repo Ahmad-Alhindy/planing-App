@@ -10,11 +10,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.asFlow
 import androidx.navigation.NavController
 import com.example.planingapp.logic.AppointmentViewModel
 import com.example.planingapp.logic.nav
+import com.example.planingapp.logic.scheduleAppointmentReminder
 import com.example.planingapp.subView.AppScaffold
 import com.example.planingapp.subView.AppointmentDetails
 import com.example.planingapp.subView.CalendarGrid
@@ -30,6 +32,7 @@ fun CalendarScreen(viewModel: AppointmentViewModel, navController: NavController
     val templates by viewModel.templates.asFlow().collectAsState(emptyList())
     val colorStart = Color(0xFF110A25)
     val colorEnd = Color(0xFF452A4D)
+    val context = LocalContext.current
 
     // Dialog states
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
@@ -108,6 +111,8 @@ fun CalendarScreen(viewModel: AppointmentViewModel, navController: NavController
                         isTemplate = false
                     )
                     viewModel.addAppointment(newAppointment)
+                    scheduleAppointmentReminder(context, newAppointment)
+
                     showTemplateDialog = false
                 },
                 onCreateNewTemplate = {

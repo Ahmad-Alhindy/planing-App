@@ -59,6 +59,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("androidx.work:work-runtime-ktx:2.10.0")  // Use the latest version available
+
 
     val room_version = "2.6.1"
 
