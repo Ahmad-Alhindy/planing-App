@@ -18,16 +18,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.planingapp.logic.Appointment
 import com.example.planingapp.logic.AppointmentViewModel
+import java.time.LocalDate
 import java.time.LocalTime
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class) // This is needed for CenterAlignedTopAppBar
 @Composable
 fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
-                      navController: NavController? = null) {
+                      navController: NavController? = null,
+                      selectedDate: LocalDate? = null
+) {
     val context = LocalContext.current
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
@@ -37,7 +39,11 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
     var endTime by remember { mutableStateOf(LocalTime.of(10, 0)) }
     val colorStart = Color(0xFF110A25)
     val colorEnd = Color(0xFF452A4D)
-
+    LaunchedEffect(startTime) {
+        if (endTime.isBefore(startTime) || endTime == startTime) {
+            endTime = startTime.plusHours(1)
+        }
+    }
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -62,6 +68,7 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
             )
         }
     ) { innerPadding ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -69,6 +76,11 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
                 .background(brush = Brush.verticalGradient(listOf(colorStart, colorEnd))),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            Text(
+                text = selectedDate?.toString() ?: "",
+                color = Color.White,
+                modifier = Modifier.padding(start = 25.dp)
+            )
             TextField(
                 value = title,
                 onValueChange = { title = it },
@@ -106,7 +118,14 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp),
-                onClick = { showTimePicker(context) { hour, minute -> endTime = LocalTime.of(hour, minute) } },
+                onClick = {
+                    showTimePicker(context) { hour, minute ->
+                        val selectedTime = LocalTime.of(hour, minute)
+                        if (!selectedTime.isBefore(startTime)) {
+                            endTime = selectedTime
+                        }
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF66B266)),
                 shape = RoundedCornerShape(12.dp)
             ) {
@@ -115,6 +134,31 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
 
             Spacer(modifier = Modifier.height(20.dp))
 
+            if (selectedDate != null){
+                Button(
+                    onClick = {
+                        if (title.isNotBlank()) {
+                            val newAppointment = Appointment(
+                                title = title,
+                                description = description,
+                                startTime = startTime,
+                                endTime = endTime,
+                                date = selectedDate,
+                                isTemplate = false
+                            )
+                            viewModel?.addAppointment(newAppointment)
+                            navController?.popBackStack() // Navigate back after saving
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 40.dp, end = 40.dp, top = 20.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF66B266)),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text("Save Appointment", fontSize = 16.sp)
+                }
+            }
             // Save button with back navigation
             Button(
                 onClick = {

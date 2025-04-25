@@ -1,6 +1,7 @@
 package com.example.planingapp.subView
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -70,12 +71,7 @@ fun CalendarGrid(
                         detectTapGestures(
                             onTap = {
                                 onDateSelected(currentDate)
-                            },
-                            onLongPress = {
-                                if (dateAppointments.isNotEmpty()) {
-                                    onShowAppointmentsForDate(currentDate)  // Use this callback instead
-                                }
-                            }
+                            },  
                         )
                     }
             ) {
@@ -117,7 +113,11 @@ fun CalendarGrid(
                                         .background(Color(0xFF4CAF50))
                                         .padding(2.dp)
                                 ) {
-                                    Column {
+                                    Column(
+                                        modifier = Modifier.clickable {
+                                            onShowAppointmentsForDate(currentDate)  // Use this callback instead
+                                        }
+                                    ) {
                                         Text(
                                             text = appointment.title,
                                             fontSize = 10.sp,
