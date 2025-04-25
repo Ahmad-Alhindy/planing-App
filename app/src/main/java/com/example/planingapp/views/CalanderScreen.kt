@@ -77,7 +77,7 @@ fun CalendarScreen(viewModel: AppointmentViewModel, navController: NavController
                 onClick = {
                     if (templates.isEmpty()) {
                         // Navigate to AddAppointment if no templates exist
-                        navController.navigate(nav.addNote)
+                        navController.navigate(nav.makeAnAppointment)
                     } else {
                         // Show template selection with today's date
                         selectedDate = LocalDate.now()
@@ -116,7 +116,7 @@ fun CalendarScreen(viewModel: AppointmentViewModel, navController: NavController
                     showTemplateDialog = false
                 },
                 onCreateNewTemplate = {
-                    navController.navigate(nav.addNote)
+                    navController.navigate("makeAnAppointment?date=${selectedDate?.toString()}")
                 },
                 onDeleteTemplate = { template ->
                     viewModel.deleteTemplate(template)

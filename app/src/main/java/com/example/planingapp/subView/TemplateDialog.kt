@@ -110,7 +110,6 @@ fun TemplateDialog(
                         // Create new template button
                         Button(
                             onClick = {
-                                onDismiss()
                                 onCreateNewTemplate()
                             },
                             modifier = Modifier.align(Alignment.CenterHorizontally),

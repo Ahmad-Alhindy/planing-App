@@ -47,7 +47,7 @@ fun HomeScreen(navController: NavController) {
             Button(
                 modifier = Modifier.padding(start = 20.dp),
                 onClick = {
-                    navController.navigate(nav.addNote)
+                    navController.navigate(nav.makeAnAppointment)
                 },
 
                 colors = ButtonDefaults.buttonColors

@@ -85,7 +85,7 @@ fun WeekView(
                 showTemplateDialog = false
             },
             onCreateNewTemplate = {
-                navController.navigate(nav.addNote)
+                navController.navigate(nav.makeAnAppointment)
             },
             onDeleteTemplate = { template ->
                 viewModel.deleteTemplate(template)
