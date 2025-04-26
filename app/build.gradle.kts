@@ -60,6 +60,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.work:work-runtime-ktx:2.10.0")  // Use the latest version available
+    implementation("androidx.datastore:datastore-preferences:1.1.5")
 
 
     val room_version = "2.6.1"
