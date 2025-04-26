@@ -71,7 +71,7 @@ fun CalendarGrid(
                         detectTapGestures(
                             onTap = {
                                 onDateSelected(currentDate)
-                            },  
+                            },
                         )
                     }
             ) {
