@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
                             MakeAppointment(viewModel, navController, date)
                         }
                         composable(nav.settings) {
-                            SettingsScreen(userViewModel)
+                            SettingsScreen(navController = navController)
                         }
 
                     })
