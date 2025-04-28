@@ -47,24 +47,6 @@ fun AppScaffold(navController: NavController
                 Text("Planning App", fontSize = 20.sp, modifier = Modifier.padding(16.dp))
                 HorizontalDivider()
 
-                // Calendar view options
-                NavigationDrawerItem(
-                    label = { Text("Day View") },
-                    selected = false,
-                    onClick = {
-                        navController.navigate(nav.day){
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            // Avoid multiple copies of the same destination when reselecting items
-                            launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            restoreState = true
-                        }
-                        scope.launch { drawerState.close() }
-                    }
-                )
-
                 NavigationDrawerItem(
                     label = { Text("Week View") },
                     selected = currentRoute == nav.week,
@@ -103,14 +85,23 @@ fun AppScaffold(navController: NavController
                 HorizontalDivider()
 
 //                // Settings and other options
-//                NavigationDrawerItem(
-//                    label = { Text("Settings") },
-//                    selected = false,
-//                    onClick = {
-//                        // Navigate to settings
-//                        scope.launch { drawerState.close() }
-//                    }
-//                )
+                NavigationDrawerItem(
+                    label = { Text("Settings") },
+                    selected = currentRoute == nav.settings,
+                    onClick = {
+                    navController.navigate(nav.settings){
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        // Avoid multiple copies of the same destination when reselecting items
+                        launchSingleTop = true
+                        // Restore state when reselecting a previously selected item
+                        restoreState = true
+                    }
+
+                        scope.launch { drawerState.close() }
+                    }
+                )
             }
         },
         content = {
