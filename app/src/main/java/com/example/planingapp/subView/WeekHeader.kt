@@ -1,5 +1,6 @@
 package com.example.planingapp.subView
 
+import android.R.attr.tint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -53,7 +54,8 @@ fun WeekHeader(
         IconButton(onClick = onPreviousWeek) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Previous Week"
+                contentDescription = "Previous Week",
+                tint = Color.White
             )
         }
 
@@ -61,13 +63,15 @@ fun WeekHeader(
             text = headerText,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            fontSize = 24.sp
+            fontSize = 24.sp,
+            color = Color.White
         )
 
         IconButton(onClick = onNextWeek) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = "Next Week"
+                contentDescription = "Next Week",
+                tint = Color.White
             )
         }
     }
@@ -79,7 +83,6 @@ fun DaysOfWeekHeader(weekStart: LocalDate) {
         modifier = Modifier
             .fillMaxWidth()
             .height(75.dp)
-            .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(vertical = 4.dp)
     ) {
         // Time column placeholder
@@ -100,13 +103,15 @@ fun DaysOfWeekHeader(weekStart: LocalDate) {
                     text = date.dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.getDefault()),
                     fontWeight = FontWeight.Bold,
                     fontSize = if (isToday) 24.sp else 18.sp,
-                    color = if (isToday) Color.Red else Color.Black
+                    color = if (isToday) Color.Red else Color.White
+
                 )
 
                 Text(
                     text = date.dayOfMonth.toString(),
                     fontWeight = FontWeight.Bold,
-                    color = if (isToday) Color.Red else Color.Black,
+                    color = if (isToday) Color.Red else Color.White
+                    ,
                     modifier = Modifier
                         .padding(top = 4.dp)
                         .background(Color.Transparent)

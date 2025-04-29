@@ -52,10 +52,16 @@ fun TemplateDialog(
                         // Dialog title
                         Text(
                             text = "Select Appointment",
-                            style = MaterialTheme.typography.headlineSmall
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = MaterialTheme.colorScheme.secondary
+
                         )
                         IconButton(onClick = { onDismiss() }) {
-                            Icon(Icons.Default.Close, contentDescription = "Close")
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Close",
+                                tint = MaterialTheme.colorScheme.secondary
+                            )
                         }
                     }
                     HorizontalDivider(
@@ -65,7 +71,11 @@ fun TemplateDialog(
                     Text(
                         text = "Date: ${selectedDate?.format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))}",
                         style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(vertical = 8.dp)
+                        fontSize = 20.sp,
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        color = MaterialTheme.colorScheme.secondary
+
+
                     )
                     // Template list
                     if (templates.isEmpty()) {
@@ -75,7 +85,9 @@ fun TemplateDialog(
                             textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 16.dp)
+                                .padding(vertical = 16.dp),
+                            color = MaterialTheme.colorScheme.secondary
+
                         )
 
                         Button(
@@ -85,12 +97,11 @@ fun TemplateDialog(
                             },
                             modifier = Modifier.align(Alignment.CenterHorizontally),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(
-                                    0xFF4CAF50
-                                )
+                                MaterialTheme.colorScheme.primary
                             )
                         ) {
-                            Text("Create New Appointment")
+                            Text("Create New Appointment",
+                                color = MaterialTheme.colorScheme.secondary)
                         }
                     } else {
                         LazyColumn {
@@ -114,13 +125,11 @@ fun TemplateDialog(
                             },
                             modifier = Modifier.align(Alignment.CenterHorizontally),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(
-                                    0xFF4CAF50
-                                )
-                            )
+                                containerColor = MaterialTheme.colorScheme.primary)
                         ) {
 
-                            Text("Create New Appointment")
+                            Text("Create New Appointment",
+                                color = MaterialTheme.colorScheme.secondary)
                         }
                     }
                 }
@@ -143,7 +152,7 @@ private fun TemplateItem(
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(Color(0xFFF5F5F5))
+            .background(MaterialTheme.colorScheme.primary)
             .padding(12.dp)
         .clickable { onSelect(template, selectedDate) },
         verticalAlignment = Alignment.CenterVertically
@@ -152,14 +161,18 @@ private fun TemplateItem(
             Text(
                 text = template.title,
                 fontSize = 16.sp,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.secondary
+
             )
             template.description?.let {
                 if (it.isNotBlank()) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = it,
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.secondary
+
                     )
                 }
             }
@@ -167,7 +180,8 @@ private fun TemplateItem(
 
             Text(
                 text = "${template.startTime} - ${template.endTime}",
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.secondary
 
             )
         }
@@ -177,7 +191,7 @@ private fun TemplateItem(
             Icon(
                 imageVector = Icons.Default.Delete,
                 contentDescription = "Delete template",
-                tint = Color.Red
+                tint = Color(0xFFD02736)
             )
         }
     }

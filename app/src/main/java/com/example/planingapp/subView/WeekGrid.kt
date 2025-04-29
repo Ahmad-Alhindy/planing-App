@@ -72,7 +72,7 @@ fun WeekGrid(
                             text = time.format(DateTimeFormatter.ofPattern("h a")),
                             fontSize = 12.sp,
                             modifier = Modifier.padding(top = 4.dp),
-                            color = Color.Black,
+                            color = Color.White,
                             fontWeight = FontWeight.Medium
                         )
                     }
@@ -81,7 +81,7 @@ fun WeekGrid(
                     for (dayOffset in 0..6) {
                         VerticalDivider(
                             modifier = Modifier.fillMaxHeight(),
-                            color = Color.Black,
+                            color = Color.White,
                             thickness = 1.dp
                         )
                         val currentDate = weekStart.plusDays(dayOffset.toLong())
@@ -164,7 +164,7 @@ fun WeekGrid(
             }
             // Divider between time slots
             HorizontalDivider(
-                color = Color.Black,
+                color = Color.White,
                 thickness = 1.1.dp
             )
         }
@@ -215,7 +215,8 @@ fun AppointmentCardSegment(
             .fillMaxHeight(heightFraction)
             .padding(top = topPadding)
             .padding(horizontal = 2.dp),
-        color = if (totalInTimeSlot > 1) Color.Red else Color(0xFF4CAF50),
+        color = if (totalInTimeSlot > 1) Color.Red else MaterialTheme.colorScheme.primary
+        ,
         onClick = onClick
     ) {
         Column(
@@ -229,6 +230,8 @@ fun AppointmentCardSegment(
                 Text(
                     text = appointment.title,
                     style = MaterialTheme.typography.titleMedium,
+                    fontSize = 10.sp,
+                    color = MaterialTheme.colorScheme.secondary,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                 )
