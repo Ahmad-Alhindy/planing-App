@@ -1,6 +1,5 @@
 package com.example.planingapp
 
-import android.app.Application
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,9 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -22,13 +19,14 @@ import androidx.navigation.navArgument
 import androidx.room.Room
 import com.example.planingapp.db.AppointmentDb
 import com.example.planingapp.logic.AppointmentViewModel
-import com.example.planingapp.logic.SettingsScreen
-import com.example.planingapp.logic.UserPreferencesViewModel
+import com.example.planingapp.logic.SettingsManger
+import com.example.planingapp.logic.SettingsManger.Companion.DARK_MODE_KEY
 import com.example.planingapp.logic.createNotificationChannel
 import com.example.planingapp.logic.nav
 import com.example.planingapp.views.MakeAppointment
 import com.example.planingapp.views.CalendarScreen
 import com.example.planingapp.views.HomeScreen
+import com.example.planingapp.views.SettingsScreen
 import com.example.planingapp.views.WeekView
 import java.time.LocalDate
 
@@ -47,8 +45,13 @@ class MainActivity : ComponentActivity() {
         ) .fallbackToDestructiveMigration() // Add this line
             .build()
         enableEdgeToEdge()
+        // Initialize preferences
+        SettingsManger.initPreferences(getSharedPreferences(DARK_MODE_KEY, MODE_PRIVATE))
         setContent {
-            PlaningAppTheme {
+            // Collect the dark mode state from SettingsManager
+            val isDarkMode = SettingsManger.isDarkMode.collectAsState(initial = false).value
+            // Apply the theme dynamically based on the dark mode state
+            PlaningAppTheme(darkTheme = isDarkMode) {
                 val viewModel = AppointmentViewModel()
                 val navController = rememberNavController()
                 NavHost(
@@ -82,12 +85,13 @@ class MainActivity : ComponentActivity() {
                         composable(nav.settings) {
                             SettingsScreen(navController = navController)
                         }
-
-                    })
+                    }
+                )
             }
         }
     }
 }
+
 
 @Composable
 fun NotificationPermissionRequest() {

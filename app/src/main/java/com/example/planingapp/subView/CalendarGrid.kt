@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -86,7 +87,7 @@ fun CalendarGrid(
                             .padding(2.dp)
                             .size(24.dp)
                             .clip(CircleShape)
-                            .background(if (isToday) Color(0xFF4CAF50) else Color.Transparent),
+                            .background(if (isToday) MaterialTheme.colorScheme.primary else Color.Transparent),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -110,7 +111,7 @@ fun CalendarGrid(
                                         .fillMaxWidth()
                                         .padding(vertical = 2.dp)
                                         .clip(RoundedCornerShape(4.dp))
-                                        .background(Color(0xFF4CAF50))
+                                        .background(MaterialTheme.colorScheme.primary)
                                         .padding(2.dp)
                                 ) {
                                     Column(
@@ -121,7 +122,7 @@ fun CalendarGrid(
                                         Text(
                                             text = appointment.title,
                                             fontSize = 10.sp,
-                                            color = Color.Black,
+                                            color = MaterialTheme.colorScheme.secondary,
                                             fontWeight = FontWeight.Bold,
                                             maxLines = 1,
                                             overflow = TextOverflow.Ellipsis
@@ -137,7 +138,7 @@ fun CalendarGrid(
                                         Text(
                                             text = "$startTime - $endTime",
                                             fontSize = 9.sp,
-                                            color = Color.Black,
+                                            color = MaterialTheme.colorScheme.secondary,
                                             maxLines = 1
                                         )
                                     }
@@ -149,7 +150,7 @@ fun CalendarGrid(
                                 Text(
                                     text = "+${dateAppointments.size - 1} more",
                                     fontSize = 9.sp,
-                                    color = Color(0xFFFFFFFF),
+                                    color = MaterialTheme.colorScheme.secondary,
                                     modifier = Modifier.padding(top = 2.dp),
                                     textAlign = TextAlign.Center
                                 )

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,7 +54,8 @@ fun AppointmentDetails(
                                 )
                             }",
                             style = MaterialTheme.typography.headlineSmall,
-                            fontSize = 18.sp
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.secondary
                         )
 
                         IconButton(onClick = { setShowAppointmentsForDate(null) }) {
@@ -73,7 +75,7 @@ fun AppointmentDetails(
                                     .padding(vertical = 6.dp),
                                 shape = RoundedCornerShape(8.dp),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = Color(0xFFE8F5E9)
+                                    containerColor =   MaterialTheme.colorScheme.primary
                                 )
                             ) {
                                 Row(
@@ -86,7 +88,8 @@ fun AppointmentDetails(
                                         Text(
                                             text = appointment.title,
                                             style = MaterialTheme.typography.titleMedium,
-                                            fontWeight = FontWeight.Bold
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.secondary
                                         )
 
                                         appointment.description?.let {
@@ -94,7 +97,8 @@ fun AppointmentDetails(
                                                 Spacer(modifier = Modifier.height(4.dp))
                                                 Text(
                                                     text = it,
-                                                    style = MaterialTheme.typography.bodyMedium
+                                                    style = MaterialTheme.typography.bodyMedium,
+                                                    color = MaterialTheme.colorScheme.secondary
                                                 )
                                             }
                                         }
@@ -110,7 +114,8 @@ fun AppointmentDetails(
 
                                         Text(
                                             text = "$startTime - $endTime",
-                                            style = MaterialTheme.typography.bodyMedium
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.secondary
                                         )
                                     }
 
@@ -124,7 +129,7 @@ fun AppointmentDetails(
                                         Icon(
                                             imageVector = Icons.Default.Delete,
                                             contentDescription = "Delete",
-                                            tint = Color.Red
+                                            tint = Color(0xFFD02736)
                                         )
                                     }
                                 }
