@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.asFlow
 import androidx.navigation.NavController
 import com.example.planingapp.logic.AppointmentViewModel
+import com.example.planingapp.logic.SettingsManger
 import com.example.planingapp.logic.nav
 import com.example.planingapp.logic.scheduleAppointmentReminder
 import com.example.planingapp.subView.AppScaffold
@@ -30,10 +31,17 @@ fun CalendarScreen(viewModel: AppointmentViewModel, navController: NavController
     var currentYearMonth by remember { mutableStateOf(YearMonth.now()) }
     val appointments by viewModel.scheduledAppointments.asFlow().collectAsState(emptyList())
     val templates by viewModel.templates.asFlow().collectAsState(emptyList())
-    val colorStart = Color(0xFF110A25)
-    val colorEnd = Color(0xFF452A4D)
-    val context = LocalContext.current
 
+    val context = LocalContext.current
+    val isDark by SettingsManger.isDarkMode.collectAsState()
+    val gradient = if (isDark) {
+        Brush.verticalGradient(
+            listOf(Color.Black, Color.DarkGray) // Dark mode colors
+        )
+    } else {
+        Brush.verticalGradient(
+            listOf( Color(0xFF1E3A8A),Color(0xFF42A5F5)))
+    }
     // Dialog states
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
     var showTemplateDialog by remember { mutableStateOf(false) }
@@ -43,7 +51,7 @@ fun CalendarScreen(viewModel: AppointmentViewModel, navController: NavController
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(brush = Brush.verticalGradient(listOf(colorStart, colorEnd)))
+                .background(gradient)
         ) {
             // Calendar part
             Column(
@@ -87,7 +95,7 @@ fun CalendarScreen(viewModel: AppointmentViewModel, navController: NavController
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp),
-                containerColor = Color(0xFF4CAF50)
+                containerColor = MaterialTheme.colorScheme.primary
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

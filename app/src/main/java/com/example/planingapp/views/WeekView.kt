@@ -1,12 +1,16 @@
 package com.example.planingapp.views
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.asFlow
 import androidx.navigation.NavController
 import com.example.planingapp.logic.Appointment
 import com.example.planingapp.logic.AppointmentViewModel
+import com.example.planingapp.logic.SettingsManger
 import com.example.planingapp.logic.nav
 import com.example.planingapp.subView.AppScaffold
 import com.example.planingapp.subView.AppointmentDetails
@@ -22,6 +26,16 @@ fun WeekView(
     viewModel: AppointmentViewModel,
     navController: NavController
 ) {
+    val isDark by SettingsManger.isDarkMode.collectAsState()
+    val gradient = if (isDark) {
+        Brush.verticalGradient(
+            listOf(Color.Black, Color.DarkGray) // Dark mode colors
+        )
+    } else {
+        Brush.verticalGradient(
+            listOf(  Color(0xFF1E3A8A),Color(0xFF42A5F5)) // Light mode colors
+        )
+    }
 
     AppScaffold(navController = navController) {
         var showAppointmentsForDate by remember { mutableStateOf<LocalDate?>(null) }
@@ -38,7 +52,7 @@ fun WeekView(
             filterAppointmentsForWeek(appointments, currentWeekStart)
         }
 
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().background(gradient)) {
             // Week header with navigation
             WeekHeader(
                 weekStart = currentWeekStart,
@@ -85,7 +99,7 @@ fun WeekView(
                 showTemplateDialog = false
             },
             onCreateNewTemplate = {
-                navController.navigate(nav.makeAnAppointment)
+                navController.navigate("makeAnAppointment?date=${selectedDate?.toString()}")
             },
             onDeleteTemplate = { template ->
                 viewModel.deleteTemplate(template)

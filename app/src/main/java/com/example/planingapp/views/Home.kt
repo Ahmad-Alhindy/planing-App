@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -18,17 +21,25 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.planingapp.NotificationPermissionRequest
+import com.example.planingapp.logic.SettingsManger
 import com.example.planingapp.logic.nav
 
 @Composable
 fun HomeScreen(navController: NavController) {
-    val colorStart = Color(0xFF110A25)  // Forest Green
-    val colorEnd = Color(0xFF452A4D)
-
+    val isDark by SettingsManger.isDarkMode.collectAsState()
+    val gradient = if (isDark) {
+        Brush.verticalGradient(
+            listOf(Color.Black, Color.DarkGray) // Dark mode colors
+        )
+    } else {
+        Brush.verticalGradient(
+            listOf(  Color(0xFF1E3A8A),Color(0xFF42A5F5)) // Light mode colors
+        )
+    }
     NotificationPermissionRequest()
     Box (modifier = Modifier.fillMaxSize()
 
-        .background(brush = Brush.verticalGradient(listOf(colorStart, colorEnd))),
+        .background(gradient),
             contentAlignment = Alignment.Center
 
     ) {
@@ -40,7 +51,7 @@ fun HomeScreen(navController: NavController) {
                 },
 
                 colors = ButtonDefaults.buttonColors
-                    (containerColor = Color(0xFF4CAF50))
+                    (containerColor = MaterialTheme.colorScheme.primary)
             )
             { Text("Callander") }
 
@@ -51,7 +62,7 @@ fun HomeScreen(navController: NavController) {
                 },
 
                 colors = ButtonDefaults.buttonColors
-                    (containerColor = Color(0xFF4CAF50))
+                    (containerColor = MaterialTheme.colorScheme.primary)
             )
             { Text("Add title") }
         }

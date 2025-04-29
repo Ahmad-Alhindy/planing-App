@@ -14,12 +14,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.planingapp.logic.Appointment
 import com.example.planingapp.logic.AppointmentViewModel
+import com.example.planingapp.logic.SettingsManger
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.*
@@ -37,8 +39,15 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
     // Date & Time States
     var startTime by remember { mutableStateOf(LocalTime.of(9, 0)) }
     var endTime by remember { mutableStateOf(LocalTime.of(10, 0)) }
-    val colorStart = Color(0xFF110A25)
-    val colorEnd = Color(0xFF452A4D)
+    val isDark by SettingsManger.isDarkMode.collectAsState()
+    val gradient = if (isDark) {
+        Brush.verticalGradient(
+            listOf(Color.Black, Color.DarkGray) // Dark mode colors
+        )
+    } else {
+        Brush.verticalGradient(
+            listOf( Color(0xFF1E3A8A),Color(0xFF42A5F5)))
+    }
     LaunchedEffect(startTime) {
         if (endTime.isBefore(startTime) || endTime == startTime) {
             endTime = startTime.plusHours(1)
@@ -63,7 +72,7 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color(0xFF110A25)
+                    containerColor = if (isDark) Color.Black else Color(0xFF1E3A8A)
                 )
             )
         }
@@ -73,7 +82,7 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(brush = Brush.verticalGradient(listOf(colorStart, colorEnd))),
+                .background(gradient),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
@@ -107,10 +116,10 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
                     .fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp),
                 onClick = { showTimePicker(context) { hour, minute -> startTime = LocalTime.of(hour, minute) } },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF66B266)),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("Start Time: $startTime")
+                Text("Start Time: $startTime", color = MaterialTheme.colorScheme.secondary)
             }
 
             // End Time Picker Button
@@ -126,10 +135,11 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
                         }
                     }
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF66B266)),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary
+                ),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("End Time: $endTime")
+                Text("End Time: $endTime", color = MaterialTheme.colorScheme.secondary)
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -153,10 +163,10 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 40.dp, end = 40.dp, top = 20.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF66B266)),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text("Save Appointment", fontSize = 16.sp)
+                    Text("Save Appointment", fontSize = 16.sp, color = MaterialTheme.colorScheme.secondary)
                 }
             }
             // Save button with back navigation
@@ -177,10 +187,10 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 40.dp, end = 40.dp, top = 20.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF66B266)),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("Save Template", fontSize = 16.sp)
+                Text("Save Template", fontSize = 16.sp, color = MaterialTheme.colorScheme.secondary)
             }
 
             // Cancel button
@@ -190,7 +200,7 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
                     .fillMaxWidth()
                     .padding(start = 40.dp, end = 40.dp),
             ) {
-                Text("Cancel", fontSize = 16.sp, color = Color.White)
+                Text("Cancel", fontSize = 16.sp, color = MaterialTheme.colorScheme.secondary)
             }
         }
     }
