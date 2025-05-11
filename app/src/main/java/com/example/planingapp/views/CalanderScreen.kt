@@ -16,8 +16,8 @@ import androidx.lifecycle.asFlow
 import androidx.navigation.NavController
 import com.example.planingapp.logic.AppointmentViewModel
 import com.example.planingapp.logic.SettingsManger
-import com.example.planingapp.logic.nav
-import com.example.planingapp.logic.scheduleAppointmentReminder
+import com.example.planingapp.logic.Nav
+import com.example.planingapp.logic.scheduleAppointmentReminders
 import com.example.planingapp.subView.AppScaffold
 import com.example.planingapp.subView.AppointmentDetails
 import com.example.planingapp.subView.CalendarGrid
@@ -85,7 +85,7 @@ fun CalendarScreen(viewModel: AppointmentViewModel, navController: NavController
                 onClick = {
                     if (templates.isEmpty()) {
                         // Navigate to AddAppointment if no templates exist
-                        navController.navigate(nav.makeAnAppointment)
+                        navController.navigate(Nav.makeAnAppointment)
                     } else {
                         // Show template selection with today's date
                         selectedDate = LocalDate.now()
@@ -119,7 +119,8 @@ fun CalendarScreen(viewModel: AppointmentViewModel, navController: NavController
                         isTemplate = false
                     )
                     viewModel.addAppointment(newAppointment)
-                    scheduleAppointmentReminder(context, newAppointment)
+                    scheduleAppointmentReminders(context, newAppointment)
+
 
                     showTemplateDialog = false
                 },

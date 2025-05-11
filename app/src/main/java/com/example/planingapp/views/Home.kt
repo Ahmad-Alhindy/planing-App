@@ -22,7 +22,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.planingapp.NotificationPermissionRequest
 import com.example.planingapp.logic.SettingsManger
-import com.example.planingapp.logic.nav
+import com.example.planingapp.logic.Nav
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -47,7 +47,7 @@ fun HomeScreen(navController: NavController) {
             Button(
                 modifier = Modifier,
                 onClick = {
-                    navController.navigate(nav.calander)
+                    navController.navigate(Nav.calander)
                 },
 
                 colors = ButtonDefaults.buttonColors
@@ -58,7 +58,7 @@ fun HomeScreen(navController: NavController) {
             Button(
                 modifier = Modifier.padding(start = 20.dp),
                 onClick = {
-                    navController.navigate(nav.makeAnAppointment)
+                    navController.navigate(Nav.makeAnAppointment)
                 },
 
                 colors = ButtonDefaults.buttonColors

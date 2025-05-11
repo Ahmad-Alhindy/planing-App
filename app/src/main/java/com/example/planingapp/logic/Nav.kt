@@ -1,6 +1,6 @@
 package com.example.planingapp.logic
 
-object nav {
+object Nav {
     const val homeScreen = "HomeScreen"
     const val makeAnAppointment = "makeAnAppointment"
     const val calander = "ShowMyNotes"

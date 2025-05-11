@@ -14,7 +14,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,6 +21,7 @@ import androidx.navigation.NavController
 import com.example.planingapp.logic.Appointment
 import com.example.planingapp.logic.AppointmentViewModel
 import com.example.planingapp.logic.SettingsManger
+import com.example.planingapp.logic.scheduleAppointmentReminders
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.*
@@ -157,6 +157,7 @@ fun MakeAppointment(  viewModel: AppointmentViewModel? = null,
                                 isTemplate = false
                             )
                             viewModel?.addAppointment(newAppointment)
+                            scheduleAppointmentReminders(context, newAppointment)
                             navController?.popBackStack() // Navigate back after saving
                         }
                     },

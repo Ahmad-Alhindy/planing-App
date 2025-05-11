@@ -22,7 +22,7 @@ import com.example.planingapp.logic.AppointmentViewModel
 import com.example.planingapp.logic.SettingsManger
 import com.example.planingapp.logic.SettingsManger.Companion.DARK_MODE_KEY
 import com.example.planingapp.logic.createNotificationChannel
-import com.example.planingapp.logic.nav
+import com.example.planingapp.logic.Nav
 import com.example.planingapp.views.MakeAppointment
 import com.example.planingapp.views.CalendarScreen
 import com.example.planingapp.views.HomeScreen
@@ -54,17 +54,22 @@ class MainActivity : ComponentActivity() {
             PlaningAppTheme(darkTheme = isDarkMode) {
                 val viewModel = AppointmentViewModel()
                 val navController = rememberNavController()
+                LaunchedEffect(Unit) {
+                    if (intent?.getStringExtra("DESTINATION") == "CalendarScreen") {
+                        navController.navigate(Nav.calander)
+                    }
+                }
                 NavHost(
                     navController = navController,
-                    startDestination = nav.homeScreen,
+                    startDestination = Nav.homeScreen,
                     builder = {
-                        composable(nav.homeScreen) {
+                        composable(Nav.homeScreen) {
                             HomeScreen(navController = navController)
                         }
-                        composable(nav.calander) {
+                        composable(Nav.calander) {
                             CalendarScreen(viewModel = viewModel, navController = navController)
                         }
-                        composable(nav.week) {
+                        composable(Nav.week) {
                             WeekView(navController = navController, viewModel = viewModel)
                         }
                         composable(
@@ -82,7 +87,7 @@ class MainActivity : ComponentActivity() {
 
                             MakeAppointment(viewModel, navController, date)
                         }
-                        composable(nav.settings) {
+                        composable(Nav.settings) {
                             SettingsScreen(navController = navController)
                         }
                     }

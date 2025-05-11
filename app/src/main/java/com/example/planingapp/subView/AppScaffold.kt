@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.planingapp.logic.nav
+import com.example.planingapp.logic.Nav
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,9 +49,9 @@ fun AppScaffold(navController: NavController
 
                 NavigationDrawerItem(
                     label = { Text("Week View") },
-                    selected = currentRoute == nav.week,
+                    selected = currentRoute == Nav.week,
                     onClick = {
-                        navController.navigate(nav.week){
+                        navController.navigate(Nav.week){
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
@@ -66,9 +66,9 @@ fun AppScaffold(navController: NavController
 
                 NavigationDrawerItem(
                     label = { Text("Month View") },
-                    selected = currentRoute == nav.calander,
+                    selected = currentRoute == Nav.calander,
                     onClick = {
-                       navController.navigate(nav.calander){
+                       navController.navigate(Nav.calander){
                            popUpTo(navController.graph.findStartDestination().id) {
                                saveState = true
                            }
@@ -87,9 +87,9 @@ fun AppScaffold(navController: NavController
 //                // Settings and other options
                 NavigationDrawerItem(
                     label = { Text("Settings") },
-                    selected = currentRoute == nav.settings,
+                    selected = currentRoute == Nav.settings,
                     onClick = {
-                    navController.navigate(nav.settings){
+                    navController.navigate(Nav.settings){
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }

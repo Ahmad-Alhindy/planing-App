@@ -6,12 +6,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.asFlow
 import androidx.navigation.NavController
 import com.example.planingapp.logic.Appointment
 import com.example.planingapp.logic.AppointmentViewModel
 import com.example.planingapp.logic.SettingsManger
-import com.example.planingapp.logic.nav
+import com.example.planingapp.logic.scheduleAppointmentReminders
 import com.example.planingapp.subView.AppScaffold
 import com.example.planingapp.subView.AppointmentDetails
 import com.example.planingapp.subView.DaysOfWeekHeader
@@ -26,6 +27,7 @@ fun WeekView(
     viewModel: AppointmentViewModel,
     navController: NavController
 ) {
+    val context = LocalContext.current
     val isDark by SettingsManger.isDarkMode.collectAsState()
     val gradient = if (isDark) {
         Brush.verticalGradient(
@@ -96,6 +98,8 @@ fun WeekView(
                     isTemplate = false
                 )
                 viewModel.addAppointment(newAppointment)
+                scheduleAppointmentReminders(context, newAppointment)
+
                 showTemplateDialog = false
             },
             onCreateNewTemplate = {

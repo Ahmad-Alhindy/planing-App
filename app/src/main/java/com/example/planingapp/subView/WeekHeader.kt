@@ -1,6 +1,5 @@
 package com.example.planingapp.subView
 
-import android.R.attr.tint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
