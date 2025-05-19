@@ -54,7 +54,6 @@ fun TemplateDialog(
                             text = "Select Appointment",
                             style = MaterialTheme.typography.headlineSmall,
                             color = MaterialTheme.colorScheme.secondary
-
                         )
                         IconButton(onClick = { onDismiss() }) {
                             Icon(
@@ -74,9 +73,8 @@ fun TemplateDialog(
                         fontSize = 20.sp,
                         modifier = Modifier.padding(vertical = 8.dp),
                         color = MaterialTheme.colorScheme.secondary
-
-
                     )
+
                     // Template list
                     if (templates.isEmpty()) {
                         Text(
@@ -87,50 +85,48 @@ fun TemplateDialog(
                                 .fillMaxWidth()
                                 .padding(vertical = 16.dp),
                             color = MaterialTheme.colorScheme.secondary
-
                         )
-
-                        Button(
-                            onClick = {
-                                onDismiss()
-                                onCreateNewTemplate()
-                            },
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                            colors = ButtonDefaults.buttonColors(
-                                MaterialTheme.colorScheme.primary
-                            )
-                        ) {
-                            Text("Create New Appointment",
-                                color = MaterialTheme.colorScheme.secondary)
-                        }
                     } else {
-                        LazyColumn {
-                            items(templates) { template ->
-                                TemplateItem(
-                                    template = template,
-                                    selectedDate = selectedDate,
-                                    onSelect = { appointment, date ->
-                                        if (date != null) onTemplateSelected(appointment, date)
-                                    },
-                                    onDelete = onDeleteTemplate
-                                )
+                        // Using height constraint instead of weight to prevent excessive space
+                        Box(
+                            modifier = Modifier
+                                .heightIn(max = 300.dp) // Set a max height for the list
+                                .fillMaxWidth()
+                        ) {
+                            LazyColumn {
+                                items(templates) { template ->
+                                    TemplateItem(
+                                        template = template,
+                                        selectedDate = selectedDate,
+                                        onSelect = { appointment, date ->
+                                            if (date != null) onTemplateSelected(appointment, date)
+                                        },
+                                        onDelete = onDeleteTemplate
+                                    )
+                                }
                             }
                         }
+                    }
 
-
-                        // Create new template button
-                        Button(
-                            onClick = {
-                                onCreateNewTemplate()
-                            },
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary)
-                        ) {
-
-                            Text("Create New Appointment",
-                                color = MaterialTheme.colorScheme.secondary)
-                        }
+                    // Create new template button - now outside and below the conditional block
+                    // This ensures it's always visible at the bottom
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(
+                        onClick = {
+                            if (templates.isEmpty()) {
+                                onDismiss()
+                            }
+                            onCreateNewTemplate()
+                        },
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Text(
+                            "Create New Appointment",
+                            color = MaterialTheme.colorScheme.secondary
+                        )
                     }
                 }
             }
