@@ -1,4 +1,5 @@
 Planning App
+
 Hi! I built this calendar app as a training project and also for personal use. It's simple, works offline, and does exactly what I need.
 
 What is this app?
